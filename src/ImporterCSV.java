@@ -109,8 +109,11 @@ public class ImporterCSV {
 
 		String[] HeaderElements = firstRow.split(",");
 		StringBuilder headerSB = new StringBuilder();
-		StringBuilder ValuesSB = new StringBuilder();
-
+		StringBuilder ValuesSB = new StringBuilder();		
+		boolean hasStartComma = line.startsWith(",");
+		
+		if (hasStartComma) ValuesSB.append("NULL,");
+		
 		Matcher matcher = Pattern.compile(COMMA_PATTERN).matcher(line);
 		int ii = 0;
 		String field = "";
@@ -133,7 +136,10 @@ public class ImporterCSV {
 			ValuesSB.append("'");
 			}
 			ii++;
-		}		
+		}	
+		
+		if (hasStartComma) headerSB.append(","+HeaderElements[ii]);
+		
 		headers = headerSB.toString();
 		headers = headers.replace("WIP ACCOUNTING CLASS", "WIP_ACCOUNTING_CLASS");
 		headers = headers.replace("WARRANTY EXP DATE", "END_DATE");
